@@ -2,6 +2,12 @@ import { User } from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 
+const options =  { 
+    maxAge:1*24*60*60*1000, 
+    httpOnly:true, 
+    sameSite: 'strict'
+};
+
 const registerUser = async(req, res) => {
     const {fullName, email, password, gender} = req.body;
     if(!fullName|| !email || !password || !gender) return res.status(400).json({ message: "All fields are required" });
@@ -53,11 +59,6 @@ try {
     }
     const token = await jwt.sign(tokenData, process.env.JWT_SECRET_KEY, { expiresIn: '1d'});
     
-    const options =  { 
-        maxAge:1*24*60*60*1000, 
-        httpOnly:true, 
-        sameSite: 'strict'
-    };
     return res.status(200)
                     .cookie("token", token, options)
                     .json({
@@ -72,7 +73,33 @@ try {
 }
 } 
 
+const logout = async(req,res) => {
+    try {
+        return res.status(200)
+                .cookie("token", "", { maxAge:0 })
+                .json({  
+                    message: "User logged out sucessfully"
+                })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Internal server Error"
+        })
+    }
+}
+
+export const getOtherUsers = async(req,res) => {
+    try {
+        const loggedInUserId = req.id;
+        const otherUsers = await User.find({ _id:{$ne: loggedInUserId} }).select('-password');
+        return res.status(200).json(otherUsers)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export { 
     registerUser,
-    loginUser
+    loginUser,
+    logout
 }

@@ -51,6 +51,33 @@ try {
 }
 }
 
+const getMessage = async(req, res) => {
+try {
+    const recieverId = req.params.id;
+    const senderId = req.id;
+
+    const senderObjectId = new mongoose.Types.ObjectId(senderId);
+    const receiverObjectId = new mongoose.Types.ObjectId(recieverId);
+
+    const conversation = await Conversation.findOne({
+        participants: {$all: [ senderObjectId, receiverObjectId ]}
+    }).populate("messages");
+    if (!conversation) {
+        return res.status(404).json({
+            message: "Conversation not found"
+        });
+    }
+    return res.status(200).json(conversation.messages);
+
+} catch (error) {
+    console.log(error);
+    return res.status(500).json({
+        message: "Internal server error"
+    })
+}
+}
+
 export {
-    sendMessage
+    sendMessage,
+    getMessage
 }

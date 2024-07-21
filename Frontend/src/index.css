@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+    background: url(../public/painting-mountain-lake-with-mountain-background_188544-9126.avif);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}

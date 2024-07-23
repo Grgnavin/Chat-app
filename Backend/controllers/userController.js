@@ -31,7 +31,8 @@ const registerUser = async(req, res) => {
 
         return res.status(201).json({
             user,
-            message: "User created successfully"
+            message: "User created successfully",
+            success: true
         })
     } catch (error) {
         console.log(error);
@@ -63,7 +64,8 @@ try {
                     .cookie("token", token, options)
                     .json({
                         user,
-                        message: `Logged in as ${user.fullName}`
+                        message: `Logged in as ${user.fullName}`,
+                        success: true
                     })
 } catch (error) {
     console.log(error);

@@ -1,16 +1,34 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import axios from 'axios';
+import { useState } from 'react'
+import toast from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router-dom'
 const Login = () => {
     const [user, setUser] = useState({
         email: "",
         password: "",
     });
-    const onSubmitHandler = (e) => {
+    const navigate = useNavigate();
+    const onSubmitHandler =async (e) => {
         e.preventDefault();
-        console.log(user);
+        try {
+            const res = await axios.post(`http://localhost:8000/api/v1/users/login`, user, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                withCredentials: true
+            });
+            navigate('/');
+            toast(res.data.message)
+            console.log(res);
+        } catch (error) {
+            toast.error(error.response.data.message)
+            console.log(error);
+        }
         setUser({
+            fullName: "",
             email: "",
             password: "",
+            gender: ""
         })
     }
     return (

@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux'
 
 const MessageContainer = () => {
     const { selectedUser } = useSelector(store => store.user);
-
     return (
         <div className='md:min-w-[550px] flex flex-col'>
                 <div className=''>

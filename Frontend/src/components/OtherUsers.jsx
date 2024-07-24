@@ -12,7 +12,7 @@ const OtherUsers = () => {
             {
                 otherUsers?.map((user) => {
                     return(
-                        <OtherUser key={user.Id} user={user}/>
+                        <OtherUser key={user._id} user={user}/>
                     )
                 })
             }

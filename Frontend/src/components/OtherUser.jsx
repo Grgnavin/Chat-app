@@ -10,7 +10,7 @@ const OtherUser = ({ user }) => {
     const { selectedUser } = useSelector(store => store.user); 
     return (
         <>
-            <div onClick={() => seletedUserHandler(user)} className={`${selectedUser?._id === user?._id ? 'bg-gray-200': '' } flex gap-2 items-center text-gray-800 hover:bg-gray-200 rounded p-2 cursor-pointer`}>
+            <div onClick={() => seletedUserHandler(user)} className={`${selectedUser?._id === user?._id ? 'bg-gray-200 text-black': 'text-white'} flex gap-2 items-center hover:text-black rounded p-2 cursor-pointer`}>
                 <div className='avatar online'>
                     <div className='w-12 rounded-full'>
                         <img src={user?.profile} alt='UserProfile'/>

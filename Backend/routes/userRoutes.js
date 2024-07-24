@@ -11,7 +11,7 @@ const router = Router();
 
 router.route('/register').post(registerUser);
 router.route('/login').post(loginUser);
-router.route('/logout').patch(logout);
+router.route('/logout').delete(logout);
 router.route('/').get(isAuthenticated ,getOtherUsers);
 
 export default router;

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import setMessages from "../redux/messageSlice"
 function SendInput() {
-    const [message, setMessage] = useState("");
+    const [inpMessage, setMessage] = useState("");
     const dispatch = useDispatch();
     const {selectedUser} = useSelector(store=>store.user);
     const {messages} = useSelector(store=>store.message);
@@ -12,13 +12,16 @@ function SendInput() {
     const onSubmitHandler = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(`http://localhost:8000/api/v1/message/send/${selectedUser?._id}`, {message}, {
+            const res = await axios.post(`http://localhost:8000/api/v1/message/${selectedUser?._id}`, { message: inpMessage }, {
                 headers:{
                     'Content-Type':'application/json'
                 },
                 withCredentials:true
             });
+            console.log(selectedUser);
+            console.log('Before Dispatch:', messages);
             dispatch(setMessages([...messages, res?.data?.newMessage]))
+            console.log('After Dispatch:', messages);
         } catch (error) {
             console.log(error);
         } 
@@ -28,7 +31,7 @@ function SendInput() {
         <form onSubmit={onSubmitHandler} className='px-4 my-3'>
             <div className='w-full relative'>
                 <input
-                    value={message}
+                    value={inpMessage}
                     onChange={(e) => setMessage(e.target.value)}
                     type="text"
                     placeholder='Send a message...'
